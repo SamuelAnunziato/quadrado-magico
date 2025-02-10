@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sudoku-Digital</title>
+    <link rel="stylesheet" href="style.css">
+    <script>
+        var num = prompt("Digite o tamanho da tabela:");
+        var numero = parseInt(num);
+
+        document.documentElement.style.setProperty('--numero-elementos', (numero+2));
+    </script>
+    <style id="estilo">
+        .sudoku-grid {
+            display: grid;
+            grid-template-columns: repeat(var(--numero-elementos), 40px);
+            grid-template-rows: repeat(var(--numero-elementos), 40px);
+            gap: 2px;
+            background-color: #333;
+            padding: 2px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <section class="sudoku-container">
+        <h1>Sudoku-Digital</h1>
+
+        <section class="sudoku-grid" id="sudoku-grid">
+        </section>
+        <section class="button-container">
+            <button class="botao-verificar" onclick="receber()">Verificar</button>
+        </section>
+    </section>
+
+    <script>
+        var tabela = [];
+
+        for(var linha = 0; linha < numero; linha++){
+            tabela[linha] = [];
+
+            for(var coluna = 0; coluna < numero; coluna++){
+                tabela[linha][coluna] = 0;
+            }
+        }
+
+        var mensagem = '';
+        var tamanho = tabela.length+1;
+        var constante = (tabela.length * (tabela.length * tabela.length + 1)) / 2;
+        alert("É permitido números de 1 a "+(tabela.length*tabela.length)+". A soma deve ser: "+constante);
+        
+
+        for(var linha = 0; linha <= tamanho; linha++){
+            for(var coluna = 0; coluna <= tamanho; coluna++){
+                if(linha == 0 || linha == tamanho || coluna == 0 || coluna == tamanho){
+                    mensagem += '<div name="print';
+
+                    if (linha == 0 && coluna == 0){
+                        mensagem += 'dp">';
+                    } else if(linha == tamanho && coluna == tamanho){
+                        mensagem += 'dp">';
+                    } else if(linha == tamanho && coluna == 0){
+                        mensagem += 'ds">';
+                    } else if(linha == 0 && coluna == tamanho){
+                        mensagem += 'ds">';
+                    } else{
+                        mensagem += (linha)+''+(coluna)+'">';
+                    }
+
+                    mensagem+="</div>";
+                } else{
+                    mensagem += '<input type="number" min="1" max="'+(tabela.length*tabela.length)+'" class="quadrado-sudoku" id="'+(linha-1)+''+(coluna-1)+'">';
+                }
+            }
+        }
+
+        document.getElementById("sudoku-grid").innerHTML = mensagem;
+
+
+        function receber(){
+            for(var linha = 0; linha < tabela.length; linha++){
+                for(var coluna = 0; coluna < tabela.length; coluna++){
+                    tabela[linha][coluna] = document.getElementById(linha+''+coluna).value;
+                }
+            }
+
+            verificar();
+        }
+
+        function verificar(){
+            restante = tabela.length * tabela.length;
+            verificacao = 1;
+
+            for(var linha = 0; linha < tabela.length; linha++){
+
+                linhacomp = linha;
+
+                for(var coluna = 0; coluna < tabela.length; coluna++){
+                    restante--;
+
+                    colunacomp = coluna + 1;
+                    linhacomp = linha;
+
+                    if(colunacomp == tabela.length){
+                        colunacomp = 0;
+                        linhacomp = linha + 1;
+                    }
+
+                    for(var comp = 0; comp < restante; comp++){
+                        if(tabela[linha][coluna] == tabela[linhacomp][colunacomp]){
+                            alert("Não é permitido repetir os números.");
+
+                            linha = tabela.length;
+                            coluna = tabela.length;
+                            verificacao = 0;
+
+                            break;
+                        }
+
+                        colunacomp++;
+                        if(colunacomp == tabela.length){
+                            colunacomp = 0;
+                            linhacomp++;
+                        }
+                    }
+                }
+            }
+
+            if(verificacao){
+                calcular();
+            }
+        }
+
+        function calcular(){
+            var somadp = 0;
+
+            for(var duo = 0; duo < tabela.length; duo++){
+                somadp += parseInt(tabela[duo][duo]);
+            }
+
+            document.getElementsByName('printdp')[0].innerHTML = somadp.toString();
+            document.getElementsByName('printdp')[1].innerHTML = somadp.toString();
+
+
+            var somads = 0;
+
+            for(var duo = 0; duo < tabela.length; duo++){
+                somads += parseInt(tabela[duo][tabela.length-1-duo]);
+            }
+
+            document.getElementsByName('printds')[0].innerHTML = somads.toString();
+            document.getElementsByName('printds')[1].innerHTML = somads.toString();
+
+
+            var somacoltotal = 0;
+            var somacol = 0;
+
+            for(var linha = 0; linha < tabela.length; linha++){
+                somacol = 0;
+
+                for(var coluna = 0; coluna < tabela.length; coluna++){
+                    somacol += parseInt(tabela[linha][coluna]);
+                }
+
+                if(somacol == constante) somacoltotal++;
+                document.getElementsByName('print'+(linha+1)+''+0)[0].innerHTML = somacol;
+                document.getElementsByName('print'+(linha+1)+''+tamanho)[0].innerHTML = somacol;
+            }
+
+
+            var somalintotal = 0;
+            var somalin = 0;
+
+            for(var coluna = 0; coluna < tabela.length; coluna++){
+                somalin = 0;
+
+                for(var linha = 0; linha < tabela.length; linha++){
+                    somalin += parseInt(tabela[linha][coluna]);
+                }
+
+                if(somalin == constante) somalintotal++;
+                document.getElementsByName('print'+0+''+(coluna+1))[0].innerHTML = somalin;
+                document.getElementsByName('print'+tamanho+''+(coluna+1))[0].innerHTML = somalin;
+            }
+
+            if(somadp == constante && somads == constante && somacoltotal == tabela.length && somalintotal == tabela.length){
+                alert("Parabéns, você conseguiu!");
+            } else{
+                alert("Está incorreto, tente novamente!");
+            }
+        }
+    </script>
+</body>
+</html>

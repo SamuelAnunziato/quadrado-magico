@@ -1,0 +1,84 @@
+body{
+    width: 100vw;
+    height: 100vh;
+    background: #1f192f;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin: 0px;
+}
+.sudoku-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+.sudoku-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 40px);
+    grid-template-rows: repeat(5, 40px);
+    gap: 2px;
+    background-color: #333;
+    padding: 2px;
+    border-radius: 5px;
+}
+.quadrado-sudoku {
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    border: 1px solid #000000;
+    background-color: #ffffff;
+    outline: none;
+    border-radius: 3px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+.quadrado-sudoku:focus {
+    background-color: #cce7ff;
+    box-shadow: 0 0 5px rgba(0, 122, 255, 0.8);
+}
+.button-container {
+    margin-top: 15px;
+    display: flex;
+    justify-content: center;
+}
+.botao-verificar {
+    padding: 10px 20px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #ffffff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+.botao-verificar:hover {
+    background-color: #0056b3;
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
+}
+.botao-verificar:active {
+    background-color: #003f7f;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transform: scale(0.98);
+}
+div {
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    border: 1px solid #00000050;
+    background-color: #1b6100;
+    outline: none;
+    border-radius: 3px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
